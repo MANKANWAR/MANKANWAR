@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Japleen Kaur — From Punjab to Production</title>
+<meta name="description" content="Personal universe of Japleen Kaur — CS, pageantry, research, and the long road from Punjab to production." />
+<style>
+  :root{
+    --bg:#000;
+    --ink:#f4f1ea;
+    --muted:#9aa3b2;
+    --indigo:#6c5cff;
+    --indigo-2:#3a2cc7;
+    --gold:#f5b301;
+    --saffron:#ff8a1f;
+    --green:#4ade80;
+    --blue:#8ab4ff;
+    --silver:#cfd6e4;
+    --terracotta:#d96b3a;
+    --glass:rgba(10,12,22,.55);
+    --border:rgba(140,150,200,.25);
+    --glow:0 0 24px rgba(108,92,255,.45), 0 0 64px rgba(108,92,255,.25);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Space Grotesk","Inter",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{min-height:100vh}
+  .mono{font-family:"JetBrains Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace}
+  a{color:inherit}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+  /* ====== COUNTDOWN ====== */
+  #countdown{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:24px}
+  #countdown .num{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:clamp(120px,28vw,360px);letter-spacing:-.02em;color:#fff;text-shadow:0 0 30px rgba(255,255,255,.35),0 0 80px rgba(108,92,255,.4);transition:opacity .15s,transform .15s}
+  #countdown .meta{font-family:"JetBrains Mono",monospace;color:#7c8497;letter-spacing:.3em;font-size:11px;text-transform:uppercase}
+  #countdown.boom .num{animation:boom .9s ease-out forwards}
+  @keyframes boom{0%{transform:scale(1);opacity:1;filter:blur(0)}60%{transform:scale(12);opacity:.4;filter:blur(8px)}100%{transform:scale(40);opacity:0;filter:blur(40px)}}
+  #flash{position:fixed;inset:0;background:radial-gradient(circle at 50% 50%,#fff 0%,rgba(255,255,255,.5) 20%,rgba(108,92,255,.3) 40%,transparent 70%);opacity:0;pointer-events:none;z-index:101;transition:opacity .6s}
+  #flash.on{opacity:1}
+
+  /* ====== LAYOUT ====== */
+  .scene{position:relative;z-index:2}
+  section{position:relative;padding:120px 24px;max-width:1200px;margin:0 auto}
+  h1,h2,h3{font-family:"Space Grotesk",sans-serif;letter-spacing:-.02em;margin:0}
+  h1{font-size:clamp(40px,7vw,96px);font-weight:700;line-height:1}
+  h2{font-size:clamp(28px,4vw,52px);font-weight:700}
+  h3{font-size:20px;font-weight:600}
+  p{color:var(--muted);line-height:1.6}
+
+  /* hero */
+  #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-top:120px}
+  #hero .eyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:24px;opacity:0;transform:translateY(10px);transition:all .8s .2s}
+  #hero h1{opacity:0;transform:translateY(20px);transition:all 1s .4s;background:linear-gradient(180deg,#fff 0%,#cfd6e4 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  #hero .tag{margin-top:32px;max-width:720px;font-size:clamp(18px,2.2vw,24px);color:#cfd6e4;line-height:1.5;opacity:0;transform:translateY(20px);transition:all 1s .8s}
+  #hero .scroll{margin-top:80px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);letter-spacing:.3em;opacity:0;transition:all .8s 1.2s}
+  #hero.live .eyebrow,#hero.live h1,#hero.live .tag,#hero.live .scroll{opacity:1;transform:none}
+
+  /* nav */
+  nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:20px 28px;backdrop-filter:blur(12px);background:linear-gradient(180deg,rgba(0,0,0,.6),transparent);opacity:0;transition:opacity .6s}
+  nav.top.show{opacity:1}
+  nav.top .brand{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#fff}
+  nav.top .brand b{color:var(--gold)}
+  nav.top .links{display:flex;gap:18px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  nav.top .links a{text-decoration:none;transition:color .2s}
+  nav.top .links a:hover{color:#fff}
+
+  /* galaxy */
+  #galaxy-section{padding:60px 24px 80px;max-width:none}
+  #galaxy-section .head{max-width:1200px;margin:0 auto 24px;padding:0 0 0 0}
+  #galaxy-section .head .kicker{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
+  #galaxy-section .head h2{margin-top:8px}
+  #galaxy-section .head p{max-width:640px;margin-top:12px}
+  #galaxy-wrap{position:relative;height:min(86vh,820px);width:100%;max-width:1400px;margin:24px auto 0;border-radius:24px;overflow:hidden;background:radial-gradient(ellipse at center,#0a0a18 0%,#000 70%);border:1px solid var(--border)}
+  #galaxy-canvas{display:block;width:100%;height:100%}
+  #planet-label{position:absolute;pointer-events:none;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;background:rgba(10,12,22,.85);border:1px solid var(--border);padding:6px 10px;border-radius:6px;backdrop-filter:blur(8px);opacity:0;transform:translate(-50%,-150%);transition:opacity .15s;white-space:nowrap;color:#fff}
+  #planet-label.on{opacity:1}
+  #planet-label .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle}
+  #galaxy-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;pointer-events:none}
+
+  /* drill-down overlay */
+  #planet-view{position:fixed;inset:0;background:radial-gradient(circle at 50% 40%,rgba(20,12,40,.95),#000 70%);z-index:80;display:none;flex-direction:column;overflow-y:auto;backdrop-filter:blur(2px)}
+  #planet-view.on{display:flex;animation:fadein .5s ease}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  #planet-view header{display:flex;justify-content:space-between;align-items:center;padding:24px 28px;position:sticky;top:0;background:linear-gradient(180deg,rgba(0,0,0,.7),transparent);backdrop-filter:blur(10px);z-index:2}
+  #planet-view .pv-title{display:flex;align-items:center;gap:14px}
+  #planet-view .pv-title .orb{width:36px;height:36px;border-radius:50%;box-shadow:0 0 24px currentColor}
+  #planet-view .pv-title h2{font-size:clamp(22px,3vw,36px)}
+  #planet-view .back{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink);border:1px solid var(--border);padding:10px 14px;border-radius:8px;background:rgba(10,12,22,.6)}
+  #planet-view .back:hover{border-color:#fff}
+  #planet-view .pv-body{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:8px 28px 60px;max-width:1300px;margin:0 auto;width:100%}
+  #planet-view .continents{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;align-content:start}
+  .continent{position:relative;padding:18px;border:1px solid var(--border);border-radius:14px;background:rgba(10,12,22,.55);cursor:pointer;transition:transform .2s, border-color .2s, box-shadow .2s;backdrop-filter:blur(6px)}
+  .continent:hover,.continent.active{transform:translateY(-2px);border-color:rgba(180,170,255,.55);box-shadow:0 0 0 1px rgba(180,170,255,.25),0 10px 40px rgba(108,92,255,.18)}
+  .continent .idx{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:.25em}
+  .continent h3{margin-top:8px;font-size:16px}
+  .continent .sub{font-size:13px;color:var(--muted);margin-top:6px}
+  .panel{position:sticky;top:88px;align-self:start;border:1px solid rgba(180,170,255,.4);border-radius:18px;background:rgba(10,12,28,.65);backdrop-filter:blur(14px);padding:26px;box-shadow:var(--glow);min-height:280px}
+  .panel .h-kicker{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
+  .panel h3{font-size:22px;margin-top:8px;color:#fff}
+  .panel .desc{margin-top:14px;color:#cfd6e4;line-height:1.6}
+  .panel .row{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+  .panel .chip{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:6px 10px;border:1px solid var(--border);border-radius:999px;color:var(--ink)}
+  .panel .empty{color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.15em;text-transform:uppercase}
+
+  /* contact */
+  #contact{padding:120px 24px 60px}
+  .mission{border:1px solid var(--border);border-radius:18px;background:linear-gradient(180deg,rgba(15,12,28,.7),rgba(5,5,12,.7));padding:32px;backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
+  .mission .bar{display:flex;justify-content:space-between;align-items:center;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);border-bottom:1px dashed var(--border);padding-bottom:14px;margin-bottom:24px}
+  .mission .bar .live{color:var(--green)}
+  .mission .bar .live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px;box-shadow:0 0 10px var(--green);animation:pulse 1.4s infinite}
+  @keyframes pulse{50%{opacity:.3}}
+  .mission .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field.full{grid-column:1/-1}
+  .field label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold)}
+  .field input,.field textarea{font-family:"JetBrains Mono",monospace;font-size:14px;color:#fff;background:rgba(0,0,0,.5);border:1px solid var(--border);border-radius:10px;padding:14px;outline:none;transition:border-color .2s, box-shadow .2s;resize:vertical}
+  .field input:focus,.field textarea:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(108,92,255,.2)}
+  .launch{margin-top:18px;width:100%;padding:18px;border-radius:12px;background:linear-gradient(135deg,var(--indigo),var(--indigo-2));color:#fff;font-family:"JetBrains Mono",monospace;letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:600;transition:transform .15s, box-shadow .2s;box-shadow:0 10px 40px rgba(108,92,255,.35)}
+  .launch:hover{transform:translateY(-2px);box-shadow:0 14px 50px rgba(108,92,255,.5)}
+  .links{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .links a{color:var(--ink);text-decoration:none;border-bottom:1px dashed var(--border);padding-bottom:2px;transition:color .2s, border-color .2s}
+  .links a:hover{color:var(--gold);border-color:var(--gold)}
+
+  footer{padding:60px 24px 80px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted)}
+  footer b{color:var(--gold)}
+
+  /* rocket */
+  #rocket{position:fixed;left:50%;bottom:-120px;transform:translateX(-50%);z-index:120;pointer-events:none;font-size:64px;filter:drop-shadow(0 0 16px rgba(255,210,120,.6))}
+  #rocket.launch{animation:rocketUp 2.6s cubic-bezier(.6,.05,.2,1) forwards}
+  @keyframes rocketUp{0%{bottom:-120px;opacity:0}10%{opacity:1}100%{bottom:120vh;opacity:1}}
+  #trail{position:fixed;inset:0;z-index:119;pointer-events:none}
+
+  @media (max-width:760px){
+    section{padding:80px 18px}
+    #planet-view .pv-body{grid-template-columns:1fr}
+    .panel{position:relative;top:auto}
+    .mission .grid{grid-template-columns:1fr}
+    nav.top .links{display:none}
+    #galaxy-wrap{height:72vh;border-radius:18px}
+  }
+</style>
+</head>
+<body>
+
+<!-- COUNTDOWN -->
+<div id="countdown">
+  <div class="meta">LAUNCH SEQUENCE · JAPLEEN KAUR</div>
+  <div class="num" id="cdnum">10</div>
+  <div class="meta" id="cdstatus">All systems nominal</div>
+</div>
+<div id="flash"></div>
+
+<!-- NAV -->
+<nav class="top" id="nav">
+  <div class="brand">JAPLEEN <b>★</b> KAUR</div>
+  <div class="links">
+    <a href="#galaxy-section">Galaxy</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- SCENE -->
+<div class="scene">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="eyebrow">★ Punjab → Toronto → Production</div>
+  <h1>A universe, built<br/>one orbit at a time.</h1>
+  <p class="tag">From Punjab to production — building technology that makes complex things feel simple.</p>
+  <div class="scroll">↓ Scroll to enter the galaxy</div>
+</section>
+
+<!-- GALAXY -->
+<section id="galaxy-section">
+  <div class="head">
+    <div class="kicker">SECTION 02 · THE GALAXY</div>
+    <h2>Six worlds. One person.</h2>
+    <p>A spiral of binary, code, and stories. Each glowing planet is a different part of who I am — hover to read the label, click to land on the surface.</p>
+  </div>
+  <div id="galaxy-wrap">
+    <canvas id="galaxy-canvas"></canvas>
+    <div id="planet-label"></div>
+    <div id="galaxy-hint">CLICK A PLANET TO EXPLORE · DRAG TO ORBIT</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="mission">
+    <div class="bar">
+      <span>MISSION CONTROL · COMM CHANNEL</span>
+      <span class="live">CHANNEL OPEN</span>
+    </div>
+    <h2 style="margin-bottom:8px">Send a transmission.</h2>
+    <p style="margin-bottom:24px">Collaborations, research chats, or just to say hi from anywhere in the galaxy.</p>
+    <form id="contact-form" class="grid" onsubmit="return launchRocket(event)">
+      <div class="field">
+        <label>// callsign</label>
+        <input required type="text" placeholder="Your name" />
+      </div>
+      <div class="field">
+        <label>// uplink address</label>
+        <input required type="email" placeholder="you@galaxy.com" />
+      </div>
+      <div class="field full">
+        <label>// payload</label>
+        <textarea required rows="5" placeholder="Type your message..."></textarea>
+      </div>
+      <div class="field full">
+        <button class="launch" type="submit">▲ INITIATE LAUNCH SEQUENCE</button>
+      </div>
+    </form>
+    <div class="links">
+      <a href="https://linkedin.com/in/japleen-kaur" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="https://github.com/japleen-kaur" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="mailto:hello@japleenkaur.com">Email ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>BUILT WITH ★ FROM <b>PUNJAB</b> TO <b>PRODUCTION</b> · ©<span id="yr"></span> JAPLEEN KAUR</div>
+</footer>
+
+</div><!-- /scene -->
+
+<!-- DRILL-DOWN -->
+<div id="planet-view">
+  <header>
+    <div class="pv-title">
+      <div class="orb" id="pv-orb"></div>
+      <div>
+        <div class="mono" style="font-size:10px;letter-spacing:.3em;color:var(--gold)" id="pv-kicker">PLANET 01</div>
+        <h2 id="pv-title">Title</h2>
+      </div>
+    </div>
+    <button class="back" onclick="closePlanet()">◀ BACK TO GALAXY · ESC</button>
+  </header>
+  <div class="pv-body">
+    <div class="continents" id="pv-continents"></div>
+    <aside class="panel" id="pv-panel">
+      <div class="h-kicker">// SURFACE SCAN</div>
+      <h3>Pick a continent</h3>
+      <div class="desc">Hover or tap any landmass on the left to load its dossier into this holographic panel.</div>
+    </aside>
+  </div>
+</div>
+
+<!-- ROCKET -->
+<div id="rocket">🚀</div>
+<canvas id="trail"></canvas>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+/* ===== Countdown ===== */
+const cdEl = document.getElementById('countdown');
+const numEl = document.getElementById('cdnum');
+const statusEl = document.getElementById('cdstatus');
+const flashEl = document.getElementById('flash');
+let n = 10;
+const tick = ()=>{
+  numEl.textContent = n;
+  numEl.style.transform='scale(1.05)';
+  setTimeout(()=>numEl.style.transform='scale(1)',120);
+  if(n===3) statusEl.textContent='Ignition sequence start';
+  if(n===1) statusEl.textContent='Liftoff';
+  n--;
+  if(n>=0){ setTimeout(tick, 650); }
+  else { ignite(); }
+};
+function ignite(){
+  cdEl.classList.add('boom');
+  flashEl.classList.add('on');
+  setTimeout(()=>{
+    cdEl.style.display='none';
+    flashEl.classList.remove('on');
+    document.getElementById('nav').classList.add('show');
+    document.getElementById('hero').classList.add('live');
+  }, 700);
+}
+setTimeout(tick, 600);
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* ===== Galaxy (three.js) ===== */
+const planetsData = [
+  { key:'cs',        name:'CS Projects',           emoji:'🪐', color:0x6c5cff, ring:true,  glow:'#8a7bff' },
+  { key:'pageantry', name:'Pageantry',             emoji:'👑', color:0xf5b301, ring:false, glow:'#ffd76b' },
+  { key:'hobbies',   name:'Hobbies & ECA',         emoji:'🏸', color:0x4ade80, ring:false, glow:'#88f7b3' },
+  { key:'edu',       name:'Education & Research',  emoji:'🎓', color:0x8ab4ff, ring:false, glow:'#b4cdff' },
+  { key:'work',      name:'Work Experience',       emoji:'💼', color:0xcfd6e4, ring:false, glow:'#ffffff' },
+  { key:'origin',    name:'Origin Story',          emoji:'🌍', color:0xd96b3a, ring:false, glow:'#ff9d6e' },
+];
+
+const continents = {
+  cs:[
+    {title:'PitchSafe', sub:'ML Injury Prediction', desc:'Full-stack ML injury prediction platform built through UofT\'s Technology Leadership cohort.', chips:['React','Node','Flask','Docker','Supabase'], detail:'Orchestrated a multi-service Docker Compose stack across three containers.', outcome:'Presented at Schwartz Reisman Innovation Campus.'},
+    {title:'Courseography', sub:'UofT CS Department', desc:'Production Haskell codebase supervised by Prof. David Liu.', chips:['Haskell','Production','OSS'], detail:'Daily users across UofT — schema and rendering paths in active production.', outcome:'Used daily by thousands of UofT students.'},
+    {title:'Speech → ASL Pipeline', sub:'RBC Borealis AI', desc:'ML pipeline that goes beyond word substitution.', chips:['Python','Pandas','scikit-learn'], detail:'ASL has its own grammar — the pipeline handles grammatical reordering, not just word substitution.', outcome:'Shipped as an internal research prototype at Borealis.'},
+    {title:'LangChain Marketing Agent', sub:'Lighthawz Consulting', desc:'Autonomous OpenAI/LangChain agent for marketing ops.', chips:['LangChain','OpenAI','Agents'], detail:'Careful schema design prevented hallucinated tool calls.', outcome:'Reliable, deterministic tool routing in production.'},
+    {title:'RAG Pipeline', sub:'SAVI Finance', desc:'LLM retrieval over proprietary financial documents.', chips:['RAG','LLM','Vector DB'], detail:'Tuned chunking + retrieval so answers cite the right source paragraphs.', outcome:'Surfaces accurate financial info from internal docs.'},
+  ],
+  pageantry:[
+    {title:'Miss International Canada 2026', sub:'National Title', desc:'Representing Canada on the international stage.', chips:['National','2026'], detail:'A platform centered on STEM equity and access for young women.', outcome:'Ongoing — preparing for international finals.'},
+    {title:'Miss Universe Punjab', sub:'Audition Intro', desc:'Developed and delivered the audition intro myself.', chips:['Pageantry','Storytelling'], detail:'Wrote and rehearsed the personal story arc end-to-end.', outcome:'Selected through audition round.'},
+    {title:'TEDx Performer', sub:'Public Speaking', desc:'Stage performance and personal storytelling.', chips:['TEDx','Speaking'], detail:'Comfortable holding a room with story-driven delivery.', outcome:'Live TEDx stage performance.'},
+  ],
+  hobbies:[
+    {title:'Badminton', sub:'UofT Team Captain', desc:'Captain of the UofT university badminton team.', chips:['Captain','UofT'], detail:'Leading practices, line-ups, and team culture.', outcome:'Active competitive season.'},
+    {title:'Archery', sub:'Competitive', desc:'Competitive archery practice.', chips:['Competitive'], detail:'Focus, breath control, and form — translates beautifully back to code.', outcome:'Sustained tournament practice.'},
+    {title:'Victoria College Choir', sub:'Performer', desc:'Performing member of the Victoria College Choir.', chips:['Choir','VicCollege'], detail:'Regular performances within the Victoria College community.', outcome:'Active member.'},
+    {title:'Hiking & Tennis', sub:'Vancouver', desc:'North Shore trails and Stanley Park courts.', chips:['Outdoors','Vancouver'], detail:'My recharge ritual when I\'m on the west coast.', outcome:'Year-round hobby.'},
+    {title:'Vedic Astrology', sub:'Personal Study', desc:'Deep personal study and cultural connection.', chips:['Culture','Study'], detail:'A throughline back to Punjab — pattern-matching, archetypes, narrative.', outcome:'Ongoing self-study.'},
+    {title:'Girls\' Robotics Club', sub:'Co-founder · Rural Punjab', desc:'Co-founded to open STEM doors for girls in rural Punjab.', chips:['Founder','STEM Equity'], detail:'Built the first hands-on robotics exposure many of the girls had ever had.', outcome:'Active chapter back home.'},
+  ],
+  edu:[
+    {title:'CS Specialist · Technology Leadership', sub:'University of Toronto · Victoria College · 2028', desc:'CS Specialist with a Technology Leadership focus.', chips:['Dean\'s List','Intl Scholar','ASIP Co-op','ASIP Ambassador 25–26'], detail:'Dean\'s List · International Scholar Award · ASIP co-op · ASIP Ambassador 2025-26.', outcome:'On track for Class of 2028.'},
+    {title:'PRISM', sub:'Undergraduate AI × Healthcare', desc:'Passive wearable sensing for behavioral signals, ADHD focus.', chips:['AI','Healthcare','ADHD'], detail:'Working with wearable data streams to surface behavioral signal.', outcome:'Active undergraduate research.'},
+    {title:'ROP253 WasteWise', sub:'Labor Economics · Prof. Yanyou Chen', desc:'Qualitative field research in labor economics.', chips:['Field Research','Economics'], detail:'Interview-based qualitative data collection and synthesis.', outcome:'ROP credit + research output.'},
+    {title:'Key Coursework', sub:'CSC + MAT + STA', desc:'The classes that shaped how I build.', chips:['CSC311 ML','CSC263 DS','CSC209 Sys','MAT235','STA238'], detail:'CSC209 systems programming: C, TCP sockets, real Unix.', outcome:'Strong systems + ML foundation.'},
+  ],
+  work:[
+    {title:'RBC Borealis AI', sub:'ML Intern', desc:'Built the Speech → ASL pipeline.', chips:['ML','Research','Python'], detail:'Worked across the data + grammar reordering layers.', outcome:'Internal research prototype.'},
+    {title:'SAVI Finance', sub:'RAG Intern', desc:'Built the RAG pipeline over proprietary financial docs.', chips:['RAG','LLM','Finance'], detail:'Tuned retrieval to keep answers grounded in the right source paragraphs.', outcome:'Reliable internal financial Q&A.'},
+    {title:'Lighthawz Consulting', sub:'Agent Developer', desc:'Built the LangChain autonomous marketing agent.', chips:['LangChain','Agents','OpenAI'], detail:'Schema-first tool design eliminated hallucinated calls.', outcome:'Deterministic agent in production.'},
+    {title:'Best Buy', sub:'Sales Associate · Vancouver', desc:'Sept 2025 → Apr 2026.', chips:['Retail','Vancouver','Customer'], detail:'Frontline customer work — sharpened how I explain technical things simply.', outcome:'Consistent floor performance.'},
+    {title:'Sky High Institute', sub:'Branch Manager · Punjab', desc:'Family language education business founded by my mother.', chips:['Management','Education','Family'], detail:'Ran branch operations and teaching as a teenager.', outcome:'Grew the local student base.'},
+  ],
+  origin:[
+    {title:'Rural Punjab', sub:'One of very few girls in STEM', desc:'Grew up as one of very few girls around me in STEM.', chips:['Punjab','STEM Equity'], detail:'Co-founded a girls\' robotics club and began teaching at Sky High Institute as a teenager.', outcome:'Made STEM tangible for the next girls in line.'},
+    {title:'Moved to Canada · Age 16', sub:'International Student', desc:'Moved across the world alone as an international student.', chips:['Age 16','Solo','Intl Student'], detail:'First time on a plane, first winter, first everything.', outcome:'Built a life in Canada from zero.'},
+    {title:'STEM Equity & Community', sub:'A throughline', desc:'A lifelong commitment to access and community-building.', chips:['Equity','Community','Leadership'], detail:'From Punjab → UofT Orientation Leader → ASIP Ambassador.', outcome:'Still building the same ladder, one rung up.'},
+  ],
+};
+
+const wrap = document.getElementById('galaxy-wrap');
+const canvas = document.getElementById('galaxy-canvas');
+const labelEl = document.getElementById('planet-label');
+
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 2000);
+camera.position.set(0, 38, 90);
+camera.lookAt(0,0,0);
+
+function resize(){
+  const r = wrap.getBoundingClientRect();
+  renderer.setSize(r.width, r.height, false);
+  camera.aspect = r.width / r.height;
+  camera.updateProjectionMatrix();
+}
+resize();
+new ResizeObserver(resize).observe(wrap);
+
+/* Background starfield */
+{
+  const g = new THREE.BufferGeometry();
+  const N = 1400;
+  const pos = new Float32Array(N*3);
+  for(let i=0;i<N;i++){
+    const r = 300 + Math.random()*600;
+    const th = Math.random()*Math.PI*2;
+    const ph = Math.acos(2*Math.random()-1);
+    pos[i*3]=r*Math.sin(ph)*Math.cos(th);
+    pos[i*3+1]=r*Math.cos(ph);
+    pos[i*3+2]=r*Math.sin(ph)*Math.sin(th);
+  }
+  g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  const m = new THREE.PointsMaterial({color:0xffffff, size:1.2, sizeAttenuation:true, transparent:true, opacity:.7});
+  scene.add(new THREE.Points(g,m));
+}
+
+/* Spiral galaxy of binary-coded particles */
+{
+  const ARMS = 4, COUNT = 6000;
+  const g = new THREE.BufferGeometry();
+  const pos = new Float32Array(COUNT*3);
+  const col = new Float32Array(COUNT*3);
+  const c1 = new THREE.Color(0x6c5cff);
+  const c2 = new THREE.Color(0xf5b301);
+  const c3 = new THREE.Color(0x8ab4ff);
+  for(let i=0;i<COUNT;i++){
+    const t = Math.pow(Math.random(),0.6);
+    const radius = t*70 + 4;
+    const arm = i % ARMS;
+    const angle = (arm/ARMS)*Math.PI*2 + t*5 + (Math.random()-0.5)*0.5;
+    const spread = (1-t)*1.5 + 0.4;
+    const x = Math.cos(angle)*radius + (Math.random()-0.5)*spread*3;
+    const z = Math.sin(angle)*radius + (Math.random()-0.5)*spread*3;
+    const y = (Math.random()-0.5)*spread*2;
+    pos[i*3]=x; pos[i*3+1]=y; pos[i*3+2]=z;
+    const mix = Math.random();
+    const c = mix<0.5 ? c1.clone().lerp(c3, Math.random()) : c2.clone().lerp(c1, Math.random());
+    col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
+  }
+  g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  g.setAttribute('color', new THREE.BufferAttribute(col,3));
+  const m = new THREE.PointsMaterial({size:0.6, vertexColors:true, transparent:true, opacity:0.95, depthWrite:false, blending:THREE.AdditiveBlending});
+  const galaxy = new THREE.Points(g,m);
+  scene.add(galaxy);
+  galaxy.userData.spin = true;
+  window._galaxy = galaxy;
+}
+
+/* Binary "waterfall" overlay particles falling and twisting */
+{
+  const N = 700;
+  const g = new THREE.BufferGeometry();
+  const pos = new Float32Array(N*3);
+  const data = [];
+  for(let i=0;i<N;i++){
+    const r = 8 + Math.random()*70;
+    const a = Math.random()*Math.PI*2;
+    pos[i*3] = Math.cos(a)*r;
+    pos[i*3+1] = 40 + Math.random()*60;
+    pos[i*3+2] = Math.sin(a)*r;
+    data.push({r, a, speed:0.08+Math.random()*0.25, twist:0.004+Math.random()*0.01});
+  }
+  g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  const m = new THREE.PointsMaterial({color:0xb4ffea, size:0.5, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, depthWrite:false});
+  const p = new THREE.Points(g,m);
+  scene.add(p);
+  window._rain = {points:p, data};
+}
+
+/* Sun glow at center */
+{
+  const sun = new THREE.Mesh(
+    new THREE.SphereGeometry(2.4, 32, 32),
+    new THREE.MeshBasicMaterial({color:0xffd97a})
+  );
+  scene.add(sun);
+  const halo = new THREE.Mesh(
+    new THREE.SphereGeometry(5, 32, 32),
+    new THREE.MeshBasicMaterial({color:0xff9d3a, transparent:true, opacity:0.18, blending:THREE.AdditiveBlending})
+  );
+  scene.add(halo);
+}
+
+/* Planets */
+const planetMeshes = [];
+planetsData.forEach((p, i)=>{
+  const orbit = 14 + i*5.5;
+  const group = new THREE.Group();
+  group.userData = { ...p, orbit, speed: 0.18 - i*0.018, phase: Math.random()*Math.PI*2 };
+  const geo = new THREE.SphereGeometry(1.6 + (i===0?0.5:0) , 32, 32);
+  const mat = new THREE.MeshBasicMaterial({color:p.color});
+  const mesh = new THREE.Mesh(geo, mat);
+  group.add(mesh);
+  // glow halo (sprite-like additive sphere)
+  const halo = new THREE.Mesh(
+    new THREE.SphereGeometry(3, 24, 24),
+    new THREE.MeshBasicMaterial({color:p.color, transparent:true, opacity:.18, blending:THREE.AdditiveBlending, depthWrite:false})
+  );
+  group.add(halo);
+  if(p.ring){
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(2.6, 3.6, 64),
+      new THREE.MeshBasicMaterial({color:0xa99dff, side:THREE.DoubleSide, transparent:true, opacity:.65})
+    );
+    ring.rotation.x = Math.PI/2.4;
+    group.add(ring);
+  }
+  // orbit ring
+  const ringPts = [];
+  for(let a=0;a<=64;a++){
+    const t = (a/64)*Math.PI*2;
+    ringPts.push(new THREE.Vector3(Math.cos(t)*orbit, 0, Math.sin(t)*orbit));
+  }
+  const ringGeo = new THREE.BufferGeometry().setFromPoints(ringPts);
+  const ringMat = new THREE.LineBasicMaterial({color:0x2a2a55, transparent:true, opacity:.55});
+  scene.add(new THREE.LineLoop(ringGeo, ringMat));
+
+  scene.add(group);
+  mesh.userData.planetKey = p.key;
+  mesh.userData.planetName = p.name;
+  mesh.userData.glow = p.glow;
+  planetMeshes.push(mesh);
+  group.userData.mesh = mesh;
+  group.userData.halo = halo;
+  p._group = group;
+});
+
+/* Drag-orbit */
+let drag=false,lx=0,ly=0,rotX=0.5,rotY=0;
+canvas.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY});
+window.addEventListener('pointerup',()=>drag=false);
+window.addEventListener('pointermove',e=>{
+  if(!drag) return;
+  rotY += (e.clientX-lx)*0.005;
+  rotX += (e.clientY-ly)*0.003;
+  rotX = Math.max(0.15, Math.min(1.2, rotX));
+  lx=e.clientX; ly=e.clientY;
+});
+
+/* Hover & click */
+const ray = new THREE.Raycaster();
+const mouse = new THREE.Vector2(-10,-10);
+let hovered = null;
+canvas.addEventListener('pointermove', e=>{
+  const r = canvas.getBoundingClientRect();
+  mouse.x = ((e.clientX-r.left)/r.width)*2-1;
+  mouse.y = -((e.clientY-r.top)/r.height)*2+1;
+  labelEl.style.left = (e.clientX - r.left) + 'px';
+  labelEl.style.top = (e.clientY - r.top) + 'px';
+});
+canvas.addEventListener('pointerleave', ()=>{ labelEl.classList.remove('on'); hovered=null; canvas.style.cursor='grab'; });
+canvas.addEventListener('click', ()=>{
+  if(hovered){ openPlanet(hovered.userData.planetKey); }
+});
+
+let t = 0;
+function animate(){
+  t += 0.008;
+  // orbit camera around center based on drag
+  const camR = 90;
+  camera.position.x = Math.sin(rotY)*Math.cos(rotX)*camR;
+  camera.position.z = Math.cos(rotY)*Math.cos(rotX)*camR;
+  camera.position.y = Math.sin(rotX)*camR;
+  camera.lookAt(0,0,0);
+
+  if(window._galaxy) window._galaxy.rotation.y += 0.0008;
+
+  // rain
+  if(window._rain){
+    const {points,data} = window._rain;
+    const pos = points.geometry.attributes.position.array;
+    for(let i=0;i<data.length;i++){
+      const d = data[i];
+      pos[i*3+1] -= d.speed;
+      d.a += d.twist;
+      const r = d.r + Math.sin(t+i)*0.4;
+      pos[i*3] = Math.cos(d.a)*r;
+      pos[i*3+2] = Math.sin(d.a)*r;
+      if(pos[i*3+1] < -10){
+        pos[i*3+1] = 70 + Math.random()*30;
+      }
+    }
+    points.geometry.attributes.position.needsUpdate = true;
+  }
+
+  // planets orbit + pulse
+  planetsData.forEach((p, i)=>{
+    const g = p._group;
+    const ang = t*g.userData.speed + g.userData.phase;
+    g.position.x = Math.cos(ang)*g.userData.orbit;
+    g.position.z = Math.sin(ang)*g.userData.orbit;
+    g.position.y = Math.sin(ang*1.3)*0.6;
+    const pulse = 1 + Math.sin(t*2 + i)*0.06;
+    g.userData.mesh.scale.setScalar(pulse);
+    g.userData.halo.scale.setScalar(pulse*1.05);
+  });
+
+  // hover detection
+  ray.setFromCamera(mouse, camera);
+  const hits = ray.intersectObjects(planetMeshes, false);
+  if(hits.length){
+    const m = hits[0].object;
+    hovered = m;
+    canvas.style.cursor='pointer';
+    labelEl.innerHTML = `<span class="dot" style="background:${m.userData.glow}"></span>${m.userData.planetName}`;
+    labelEl.classList.add('on');
+  } else {
+    hovered = null;
+    canvas.style.cursor = drag ? 'grabbing' : 'grab';
+    labelEl.classList.remove('on');
+  }
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* ===== Planet drill-down ===== */
+const pv = document.getElementById('planet-view');
+const pvOrb = document.getElementById('pv-orb');
+const pvTitle = document.getElementById('pv-title');
+const pvKicker = document.getElementById('pv-kicker');
+const pvContinents = document.getElementById('pv-continents');
+const pvPanel = document.getElementById('pv-panel');
+
+window.openPlanet = function(key){
+  const p = planetsData.find(x=>x.key===key);
+  const idx = planetsData.indexOf(p);
+  pvOrb.style.background = `radial-gradient(circle at 30% 30%, #fff, ${p.glow} 30%, #000 90%)`;
+  pvOrb.style.color = p.glow;
+  pvTitle.textContent = `${p.emoji}  ${p.name}`;
+  pvKicker.textContent = `PLANET 0${idx+1} · DRILL-DOWN`;
+  pvContinents.innerHTML = '';
+  continents[key].forEach((c, i)=>{
+    const el = document.createElement('div');
+    el.className = 'continent';
+    el.innerHTML = `<div class="idx">CONTINENT 0${i+1}</div><h3>${c.title}</h3><div class="sub">${c.sub}</div>`;
+    el.addEventListener('mouseenter', ()=>showPanel(c, el));
+    el.addEventListener('click', ()=>showPanel(c, el));
+    pvContinents.appendChild(el);
+  });
+  // reset panel
+  pvPanel.innerHTML = `<div class="h-kicker">// SURFACE SCAN</div><h3>Pick a continent</h3><div class="desc">Hover or tap any landmass on the left to load its dossier into this holographic panel.</div>`;
+  pv.classList.add('on');
+  document.body.style.overflow='hidden';
+};
+function showPanel(c, el){
+  document.querySelectorAll('.continent').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  pvPanel.innerHTML = `
+    <div class="h-kicker">// ${c.sub.toUpperCase()}</div>
+    <h3>${c.title}</h3>
+    <div class="desc">${c.desc}</div>
+    <div class="row">${c.chips.map(x=>`<span class="chip">${x}</span>`).join('')}</div>
+    <div class="desc" style="margin-top:18px"><b style="color:#fff">Key detail —</b> ${c.detail}</div>
+    <div class="desc"><b style="color:var(--gold)">Outcome —</b> ${c.outcome}</div>
+  `;
+}
+window.closePlanet = function(){
+  pv.classList.remove('on');
+  document.body.style.overflow='';
+};
+window.addEventListener('keydown', e=>{ if(e.key==='Escape') closePlanet(); });
+
+/* ===== Rocket launch on submit ===== */
+const rocket = document.getElementById('rocket');
+const trail = document.getElementById('trail');
+const tctx = trail.getContext('2d');
+function sizeTrail(){ trail.width = innerWidth; trail.height = innerHeight; }
+sizeTrail(); window.addEventListener('resize', sizeTrail);
+
+let particles = [];
+function tick(){
+  tctx.fillStyle = 'rgba(0,0,0,0.18)';
+  tctx.fillRect(0,0,trail.width,trail.height);
+  particles = particles.filter(p=>p.life>0);
+  for(const p of particles){
+    p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.life -= 1;
+    tctx.fillStyle = `rgba(${p.r},${p.g},${p.b},${p.life/60})`;
+    tctx.fillRect(p.x, p.y, p.s, p.s);
+  }
+  requestAnimationFrame(tick);
+}
+tick();
+
+window.launchRocket = function(e){
+  e.preventDefault();
+  rocket.classList.remove('launch');
+  void rocket.offsetWidth;
+  rocket.classList.add('launch');
+  const start = performance.now();
+  const emit = ()=>{
+    const elapsed = performance.now()-start;
+    if(elapsed > 2600) return;
+    const rect = rocket.getBoundingClientRect();
+    for(let i=0;i<6;i++){
+      particles.push({
+        x: rect.left + rect.width/2 + (Math.random()-0.5)*16,
+        y: rect.top + rect.height,
+        vx: (Math.random()-0.5)*1.2,
+        vy: 1 + Math.random()*1.5,
+        s: 2 + Math.random()*3,
+        life: 50 + Math.random()*30,
+        r: 255, g: 180+Math.random()*60|0, b: 40+Math.random()*80|0
+      });
+    }
+    requestAnimationFrame(emit);
+  };
+  emit();
+  setTimeout(()=>{
+    e.target.reset();
+    const ok = document.createElement('div');
+    ok.textContent='✓ TRANSMISSION RECEIVED. THANK YOU.';
+    ok.style.cssText='position:fixed;left:50%;top:30%;transform:translateX(-50%);font-family:JetBrains Mono,monospace;font-size:12px;letter-spacing:.3em;color:#4ade80;background:rgba(0,0,0,.85);border:1px solid rgba(74,222,128,.4);padding:14px 22px;border-radius:10px;z-index:200;box-shadow:0 0 30px rgba(74,222,128,.3)';
+    document.body.appendChild(ok);
+    setTimeout(()=>ok.remove(), 2400);
+  }, 1800);
+  return false;
+};
+</script>
+</body>
+</html>
